@@ -13,6 +13,8 @@
 
 using namespace std;
 
+
+// 1. DEFINISI INFOTYPE (DATA LAGU)
 struct infotype{
     int id;
     string judul;
@@ -21,27 +23,35 @@ struct infotype{
     int tahun;
 };
 
-typedef struct ElmList *address;
-typedef struct ElmEdge *addressEdge;
 
+// 2. DEFINISI POINTER & ELEMENT
+typedef struct ElmList *address; // Pointer ke Elemen lagu
+typedef struct ElmEdge *addressEdge; // Pointer ke Elemen relasi (graph)
+
+// Node untuk graph (daftar tetangga/kemiripan)
 struct ElmEdge{
     address nodeTuju;
     addressEdge next;
 };
 
-struct ElmList{
-    infotype info;
-    address next;
-    address prev;
 
-    addressEdge firstedge;
+// Node main (utama) untuk elemen list lagu
+// Menggunakan Doubly Linked List (DLL)
+struct ElmList{
+    infotype info; // Data lagu
+    address next; // Pointer next
+    address prev; // Pointer prev
+
+    addressEdge firstedge; // Nanti dipake untuk graph (head of edge list)
 };
 
+// Wrapper (definisi List)
 struct List{
     address first;
     address last;
 };
 
+// 3. PRIMITIF LIST
 void createList(List &L);
 address alokasi(infotype X);
 void insertLast(List &L, address P);
