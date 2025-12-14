@@ -4,17 +4,6 @@
 #include <iostream>
 #include <string>
 
-#define Nil NULL
-#define info(P) (P)->info
-#define next(P) (P)->next
-#define prev(P) (P)->prev
-#define first(L) ((L).first)
-#define last(L) ((L).last)
-
-// Macro untuk Stack & Playlist
-#define top(S) ((S).top)
-#define songRef(P) (P)->songRef
-
 using namespace std;
 
 // -- VERSI 1 --
@@ -28,10 +17,16 @@ struct infotype{
     int tahun;
 };
 
-
 // 2. DEFINISI POINTER & ELEMENT
-typedef struct ElmList *address; // Pointer ke Elemen lagu (DLL)
-typedef struct ElmEdge *addressEdge; // Pointer ke Elemen relasi (graph)
+struct ElmList;
+struct ElmEdge;
+struct ElmPlaylist;
+struct ElmStack;
+
+typedef ElmList* address;           // Pointer ke Elemen lagu (DLL)
+typedef ElmEdge* addressEdge;       // Pointer ke Elemen relasi (graph)
+typedef ElmPlaylist* addressP;      // Pointer playlist
+typedef ElmStack* addressStack;     // Pointer stack
 
 // Node untuk graph (daftar tetangga/kemiripan)
 struct ElmEdge{
@@ -39,15 +34,13 @@ struct ElmEdge{
     addressEdge next;
 };
 
-
 // Node main (utama) untuk elemen list lagu
 // Menggunakan Doubly Linked List (DLL)
 struct ElmList{
-    infotype info; // Data lagu
-    address next; // Pointer next
-    address prev; // Pointer prev
-
-    addressEdge firstedge; // Nanti dipake untuk graph (head of edge list)
+    infotype info;       // Data lagu
+    address next;        // Pointer next
+    address prev;        // Pointer prev
+    addressEdge firstedge; // Head of edge list (graph)
 };
 
 // Wrapper (definisi List)
@@ -57,20 +50,16 @@ struct List{
 };
 
 // 3. STRUKTUR DATA PLAYLIST (SINGLY LIST)
-typedef struct ElmPlaylist *addressP;
-
-struct ElmPlayList{
+struct ElmPlaylist{
     address songRef;
     addressP next;
 };
 
 struct ListPlaylist{
-     addressP first;
+    addressP first;
 };
 
 // 4. STRUKTUR DATA HISTORY (STACK)
-typedef struct ElmStack *addressStack;
-
 struct ElmStack{
     address songRef;
     addressStack next;
@@ -97,7 +86,7 @@ void connectGraph(List L, address PBaru);
 
 // Primitive Playlist (Singly List)
 void createPlaylist(ListPlaylist &LP);
-void insertPlaylist(ListPlaylist &LP, address songRef); 
+void insertPlaylist(ListPlaylist &LP, address songRef);
 void printPlaylist(ListPlaylist LP);
 
 // Primitive Stack (History)
