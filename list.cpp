@@ -66,9 +66,56 @@ void printInfo(List L) {
     }
 }
 
+//5. Fitur Search
+address findSong(List L, string judul) {
+    address P = first(L);
+    while (P != Nil) {
+        if (info(P).judul == judul) {
+            return P;
+        }
+        P = next(P);
+    }
+    return Nil;
+}
+
+//6. Fitur Delete (DLL)
+void deleteSong(List &L, string judul) {
+    address P = findSong(L, judul);
+    
+    if (P == Nil) {
+        cout << "Lagu tidak ditemukan!" << endl;
+        return;
+    }
+
+    // Hapus dari DLL
+    if (P == first(L)) {
+        // Hapus depan
+        first(L) = next(P);
+        if (first(L) != Nil) {
+            prev(first(L)) = Nil;
+        } else {
+            last(L) = Nil;
+        }
+    } else if (P == last(L)) {
+        // Hapus belakang
+        last(L) = prev(P);
+        next(last(L)) = Nil;
+    } else {
+        // Hapus tengah
+        next(prev(P)) = next(P);
+        prev(next(P)) = prev(P);
+    }
+
+    cout << "Lagu '" << info(P).judul << "' berhasil dihapus." << endl;
+    delete P; // Free memory
+    
+    // note: biasanya recommended buat hapus pointer di Graph/Playlist biar ga dangling 
+    // tapi buat tahap ini DLL delete dah cukup.
+}
+
 // -- Graph -- //
 
-//5. Tambah Edge
+//7. Tambah Edge
 void addEdge(address PAsal, address PTuju) {
     // Alokasi edge baru
     addressEdge newEdge = new ElmEdge;
