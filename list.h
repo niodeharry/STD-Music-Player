@@ -11,6 +11,10 @@
 #define first(L) ((L).first)
 #define last(L) ((L).last)
 
+// Macro untuk Stack & Playlist
+#define top(S) ((S).top)
+#define songRef(P) (P)->songRef
+
 using namespace std;
 
 // -- VERSI 1 --
@@ -26,7 +30,7 @@ struct infotype{
 
 
 // 2. DEFINISI POINTER & ELEMENT
-typedef struct ElmList *address; // Pointer ke Elemen lagu
+typedef struct ElmList *address; // Pointer ke Elemen lagu (DLL)
 typedef struct ElmEdge *addressEdge; // Pointer ke Elemen relasi (graph)
 
 // Node untuk graph (daftar tetangga/kemiripan)
@@ -52,13 +56,57 @@ struct List{
     address last;
 };
 
-// 3. PRIMITIF LIST
+// 3. STRUKTUR DATA PLAYLIST (SINGLY LIST)
+typedef struct ElmPlaylist *addressP;
+
+struct ElmPlayList{
+    address songRef;
+    addressP next;
+};
+
+struct ListPlaylist{
+     addressP first;
+};
+
+// 4. STRUKTUR DATA HISTORY (STACK)
+typedef struct ElmStack *addressStack;
+
+struct ElmStack{
+    address songRef;
+    addressStack next;
+};
+
+struct Stack{
+    addressStack top;
+};
+
+// 5. FUNGSI
+// Primitive Library (DLL)
 void createList(List &L);
 address alokasi(infotype X);
 void insertLast(List &L, address P);
 void printInfo(List L);
 
+// Fitur Search & Delete
+address findSong(List L, string judul);
+void deleteSong(List &L, string judul);
+
+// Primitive Graph
 void addEdge(address PAsal, address PTuju);
 void connectGraph(List L, address PBaru);
+
+// Primitive Playlist (Singly List)
+void createPlaylist(ListPlaylist &LP);
+void insertPlaylist(ListPlaylist &LP, address songRef); 
+void printPlaylist(ListPlaylist LP);
+
+// Primitive Stack (History)
+void createStack(Stack &S);
+void push(Stack &S, address songRef);
+address pop(Stack &S);
+void printHistory(Stack S);
+
+// Player
+void playSong(address P, Stack &S);
 
 #endif
