@@ -188,3 +188,51 @@ void playSong(address P, Stack &S) {
         push(S, P); // Masuk Stack History
     }
 }
+
+// ================= PLAYLIST (SINGLY LINKED LIST) =================
+
+// Create Playlist
+void createPlaylist(ListPlaylist &LP) {
+    LP.first = nullptr;
+}
+
+// Insert ke Playlist
+void insertPlaylist(ListPlaylist &LP, address songRef) {
+    if (songRef == nullptr) return;
+
+    addressP P = new ElmPlaylist;
+    P->songRef = songRef;
+    P->next = nullptr;
+
+    if (LP.first == nullptr) {
+        LP.first = P;
+    } else {
+        addressP Q = LP.first;
+        while (Q->next != nullptr) {
+            Q = Q->next;
+        }
+        Q->next = P;
+    }
+
+    cout << "Lagu masuk ke playlist: " << songRef->info.judul << endl;
+}
+
+// Print Playlist
+void printPlaylist(ListPlaylist LP) {
+    cout << "\n=== PLAYLIST ===" << endl;
+    if (LP.first == nullptr) {
+        cout << "(Kosong)" << endl;
+        return;
+    }
+
+    addressP P = LP.first;
+    int i = 1;
+    while (P != nullptr) {
+        if (P->songRef != nullptr) {
+            cout << i++ << ". "
+                 << P->songRef->info.judul
+                 << " - " << P->songRef->info.artis << endl;
+        }
+        P = P->next;
+    }
+}
