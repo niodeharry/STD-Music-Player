@@ -4,31 +4,31 @@
 
 //1. Create List
 void createList(List &L) {
-    first(L) = Nil;
-    last(L) = Nil;
+    L.first = nullptr;
+    L.last = nullptr;
 }
 
 //2. Alokasi
 address alokasi(infotype X) {
     address P = new ElmList;
-    info(P) = X;
-    next(P) = Nil;
-    prev(P) = Nil;
-    P->firstedge = Nil; // State awal graph edge kosong
+    P->info = X;
+    P->next = nullptr;
+    P->prev = nullptr;
+    P->firstedge = nullptr; // State awal graph edge kosong
     return P;
 }
 
 //3. Insert Last (DLL)
 void insertLast(List &L, address P) {
-    if (first(L) == Nil) {
+    if (L.first == nullptr) {
         // Saat list kosong
-        first(L) = P;
-        last(L) = P;
+        L.first = P;
+        L.last = P;
     } else {
         // Saat list tidak kosong
-        next(last(L)) = P; // Connect next element terakhir ke P
-        prev(P) = last(L); // Connect previous P ke elemen terakhir
-        last(L) = P; // Update last jadi P
+        L.last->next = P; // Connect next element terakhir ke P
+        P->prev = L.last; // Connect previous P ke elemen terakhir
+        L.last = P; // Update last jadi P
     }
 
     // Untuk menjalankan logika graph setiap insert
@@ -37,76 +37,76 @@ void insertLast(List &L, address P) {
 
 //4. Print Info
 void printInfo(List L) {
-    if (first(L) == Nil) {
+    if (L.first == nullptr) {
         cout << "[List Kosong]" << endl;
         return;
     }
 
-    address P = first(L);
+    address P = L.first;
     cout << "\n=== LIBRARY LAGU (DOUBLY LINKED LIST) ===" << endl;
-    while (P != Nil) {
+    while (P != nullptr) {
         // Cetak info lagu
-        cout << "ID: " << info(P).id << " | " 
-             << info(P).judul << " - " << info(P).artis 
-             << " (" << info(P).genre << ")";
+        cout << "ID: " << P->info.id << " | "
+             << P->info.judul << " - " << P->info.artis
+             << " (" << P->info.genre << ")";
 
         // Cetak info graph untuk rekomendasi
         cout << "\n   [Rekomendasi]: ";
         addressEdge E = P->firstedge;
-        if (E == Nil) cout << "-";
+        if (E == nullptr) cout << "-";
         
-        while (E != Nil) {
+        while (E != nullptr) {
             // Akses info lagu melalui pointer edge
-            cout << "[" << info(E->nodeTuju).judul << "] ";
+            cout << "[" << E->nodeTuju->info.judul << "] ";
             E = E->next;
         }
         
         cout << "\n----------------------------------------" << endl;
-        P = next(P);
+        P = P->next;
     }
 }
 
 //5. Fitur Search
 address findSong(List L, string judul) {
-    address P = first(L);
-    while (P != Nil) {
-        if (info(P).judul == judul) {
+    address P = L.first;
+    while (P != nullptr) {
+        if (P->info.judul == judul) {
             return P;
         }
-        P = next(P);
+        P = P->next;
     }
-    return Nil;
+    return nullptr;
 }
 
 //6. Fitur Delete (DLL)
 void deleteSong(List &L, string judul) {
     address P = findSong(L, judul);
     
-    if (P == Nil) {
+    if (P == nullptr) {
         cout << "Lagu tidak ditemukan!" << endl;
         return;
     }
 
     // Hapus dari DLL
-    if (P == first(L)) {
+    if (P == L.first) {
         // Hapus depan
-        first(L) = next(P);
-        if (first(L) != Nil) {
-            prev(first(L)) = Nil;
+        L.first = P->next;
+        if (L.first != nullptr) {
+            L.first->prev = nullptr;
         } else {
-            last(L) = Nil;
+            L.last = nullptr;
         }
-    } else if (P == last(L)) {
+    } else if (P == L.last) {
         // Hapus belakang
-        last(L) = prev(P);
-        next(last(L)) = Nil;
+        L.last = P->prev;
+        L.last->next = nullptr;
     } else {
         // Hapus tengah
-        next(prev(P)) = next(P);
-        prev(next(P)) = prev(P);
+        P->prev->next = P->next;
+        P->next->prev = P->prev;
     }
 
-    cout << "Lagu '" << info(P).judul << "' berhasil dihapus." << endl;
+    cout << "Lagu '" << P->info.judul << "' berhasil dihapus." << endl;
     delete P; // Free memory
     
     // note: biasanya recommended buat hapus pointer di Graph/Playlist biar ga dangling 
@@ -120,7 +120,7 @@ void addEdge(address PAsal, address PTuju) {
     // Alokasi edge baru
     addressEdge newEdge = new ElmEdge;
     newEdge->nodeTuju = PTuju;
-    newEdge->next = Nil;
+    newEdge->next = nullptr;
 
     // Insert first ke list edge (O(1))
     newEdge->next = PAsal->firstedge;
@@ -129,13 +129,13 @@ void addEdge(address PAsal, address PTuju) {
 
 //6. Koneksi Graph
 void connectGraph(List L, address PBaru) {
-    address P = first(L);
-    while (P != Nil) {
+    address P = L.first;
+    while (P != nullptr) {
         // Dont check diri sendiri
         if (P != PBaru) {
             // Check kesamaan artis/genre
-            bool samaArtis = (info(P).artis == info(PBaru).artis);
-            bool samaGenre = (info(P).genre == info(PBaru).genre);
+            bool samaArtis = (P->info.artis == PBaru->info.artis);
+            bool samaGenre = (P->info.genre == PBaru->info.genre);
 
             // Buat relasi undirected (2 arah)
             if (samaArtis || samaGenre) {
@@ -143,48 +143,48 @@ void connectGraph(List L, address PBaru) {
                 addEdge(P, PBaru);
             }
         }
-        P = next(P);
+        P = P->next;
     }
 }
 
 // IMPLEMENTASI STACK (HISTORY)
 void createStack(Stack &S) {
-    top(S) = Nil;
+    S.top = nullptr;
 }
 
 void push(Stack &S, address songRef) {
     addressStack P = new ElmStack;
     P->songRef = songRef;
-    P->next = top(S);
-    top(S) = P;
+    P->next = S.top;
+    S.top = P;
 }
 
 address pop(Stack &S) {
-    if (top(S) == Nil) return Nil;
+    if (S.top == nullptr) return nullptr;
     
-    addressStack P = top(S);
+    addressStack P = S.top;
     address songRef = P->songRef;
     
-    top(S) = P->next;
+    S.top = P->next;
     delete P;
     return songRef;
 }
 
 void printHistory(Stack S) {
-    addressStack P = top(S);
+    addressStack P = S.top;
     cout << "\n=== HISTORY (STACK) ===" << endl;
-    if (P == Nil) cout << "(Kosong)" << endl;
-    while (P != Nil) {
-        if (P->songRef != Nil) {
-            cout << "[Played] " << info(P->songRef).judul << endl;
+    if (P == nullptr) cout << "(Kosong)" << endl;
+    while (P != nullptr) {
+        if (P->songRef != nullptr) {
+            cout << "[Played] " << P->songRef->info.judul << endl;
         }
         P = P->next;
     }
 }
 
 void playSong(address P, Stack &S) {
-    if (P != Nil) {
-        cout << "\n>>> NOW PLAYING: " << info(P).judul << " <<<" << endl;
+    if (P != nullptr) {
+        cout << "\n>>> NOW PLAYING: " << P->info.judul << " <<<" << endl;
         push(S, P); // Masuk Stack History
     }
 }
