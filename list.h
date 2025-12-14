@@ -13,6 +13,7 @@
 
 using namespace std;
 
+// -- VERSI 1 --
 
 // 1. DEFINISI INFOTYPE (DATA LAGU)
 struct infotype{

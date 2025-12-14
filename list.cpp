@@ -1,5 +1,7 @@
 #include "list.h"
 
+// -- VERSI 1 --
+
 //1. Create List
 void createList(List &L) {
     first(L) = Nil;

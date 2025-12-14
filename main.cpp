@@ -3,6 +3,8 @@
 
 using namespace std;
 
+// -- VERSI 1 --
+
 int main() {
     //Deklarasi List
     List L;
