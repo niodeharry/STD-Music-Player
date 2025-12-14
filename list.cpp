@@ -146,3 +146,45 @@ void connectGraph(List L, address PBaru) {
         P = next(P);
     }
 }
+
+// IMPLEMENTASI STACK (HISTORY)
+void createStack(Stack &S) {
+    top(S) = Nil;
+}
+
+void push(Stack &S, address songRef) {
+    addressStack P = new ElmStack;
+    P->songRef = songRef;
+    P->next = top(S);
+    top(S) = P;
+}
+
+address pop(Stack &S) {
+    if (top(S) == Nil) return Nil;
+    
+    addressStack P = top(S);
+    address songRef = P->songRef;
+    
+    top(S) = P->next;
+    delete P;
+    return songRef;
+}
+
+void printHistory(Stack S) {
+    addressStack P = top(S);
+    cout << "\n=== HISTORY (STACK) ===" << endl;
+    if (P == Nil) cout << "(Kosong)" << endl;
+    while (P != Nil) {
+        if (P->songRef != Nil) {
+            cout << "[Played] " << info(P->songRef).judul << endl;
+        }
+        P = P->next;
+    }
+}
+
+void playSong(address P, Stack &S) {
+    if (P != Nil) {
+        cout << "\n>>> NOW PLAYING: " << info(P).judul << " <<<" << endl;
+        push(S, P); // Masuk Stack History
+    }
+}
