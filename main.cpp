@@ -63,16 +63,33 @@ int main() {
                 break;
             
             case 2: {
-                cout << "Masukkan Judul: ";
+                infotype data;
+                static int autoID = 10;
+            
                 cleanInput();
-                getline(cin, judulCari); 
-
-                // default untuk demo
-                P = alokasi({rand() % 100 + 10, judulCari, "Unknown", "Pop", 2024});
+            
+                cout << "Masukkan Judul  : ";
+                getline(cin, data.judul);
+            
+                cout << "Masukkan Artist  : ";
+                getline(cin, data.artis);
+            
+                cout << "Masukkan Genre  : ";
+                getline(cin, data.genre);
+            
+                cout << "Masukkan Tahun  : ";
+                cin >> data.tahun;
+                cleanInput();
+            
+                data.id = autoID++;
+            
+                P = alokasi(data);
                 insertLast(Library, P);
+            
                 cout << "Lagu berhasil ditambah!" << endl;
                 break;
             }
+
 
             case 3:
                 cout << "Judul lagu yang dihapus: ";
