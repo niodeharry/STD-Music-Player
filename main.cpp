@@ -37,7 +37,7 @@ int main() {
     P = alokasi({3, "Terhempas Hilang", "Cherry Bombshell", "Dream Pop", 2000});
     insertLast(Library, P);
 
-    P = alokasi({4, "Wake Me Up When September Ends", "Green Day", "Pop", 2004});
+    P = alokasi({4, "Good Riddance", "Green Day", "Pop", 2004});
     insertLast(Library, P);
 
     // 4. Loop Menu Utama
