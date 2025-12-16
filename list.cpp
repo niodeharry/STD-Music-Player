@@ -78,6 +78,42 @@ address findSong(List L, string judul) {
     return nullptr;
 }
 
+void deleteAllEdges(address P) {
+    addressEdge E = P->firstedge;
+    while (E != nullptr) {
+        addressEdge temp = E;
+        E = E->next;
+        delete temp;
+    }
+    P->firstedge = nullptr;
+}
+
+void removeEdgesToSong(List &L, address target) {
+    address P = L.first;
+    while (P != nullptr) {
+        addressEdge prev = nullptr;
+        addressEdge E = P->firstedge;
+
+        while (E != nullptr) {
+            if (E->nodeTuju == target) {
+                if (prev == nullptr) {
+                    P->firstedge = E->next;
+                } else {
+                    prev->next = E->next;
+                }
+                addressEdge temp = E;
+                E = E->next;
+                delete temp;
+            } else {
+                prev = E;
+                E = E->next;
+            }
+        }
+        P = P->next;
+    }
+}
+
+
 //6. Fitur Delete (DLL)
 void deleteSong(List &L, string judul) {
     address P = findSong(L, judul);
@@ -86,6 +122,9 @@ void deleteSong(List &L, string judul) {
         cout << "Lagu tidak ditemukan!" << endl;
         return;
     }
+
+    removeEdgesToSong(L, P);
+    deleteAllEdges(P);
 
     // Hapus dari DLL
     if (P == L.first) {
@@ -112,6 +151,7 @@ void deleteSong(List &L, string judul) {
     // note: biasanya recommended buat hapus pointer di Graph/Playlist biar ga dangling 
     // tapi buat tahap ini DLL delete dah cukup.
 }
+
 
 // -- Graph -- //
 
