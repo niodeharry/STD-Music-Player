@@ -78,7 +78,12 @@ void printInfo(List L);
 
 // Fitur Search & Delete
 address findSong(List L, string judul);
+void searchSongs(List L, string judul);
 void deleteSong(List &L, string judul);
+
+// Helper untuk Graph Cleanup
+void deleteAllEdges(address P);
+void removeEdgesToSong(List &L, address target);
 
 // Primitive Graph
 void addEdge(address PAsal, address PTuju);

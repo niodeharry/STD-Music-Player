@@ -66,7 +66,7 @@ void printInfo(List L) {
     }
 }
 
-//5. Fitur Search
+//5. Hlpr Fitur Search (OBSOLeTe)
 address findSong(List L, string judul) {
     address P = L.first;
     while (P != nullptr) {
@@ -77,6 +77,34 @@ address findSong(List L, string judul) {
     }
     return nullptr;
 }
+
+//5. Fitur Search (BARU)
+void searchSongs(List L, string judul) {
+    address P = L.first;
+    bool ketemu = false;
+    int i = 1;
+
+    cout << "\n=== HASIL PENCARIAN ===" << endl;
+
+    while (P != nullptr) {
+        if (P->info.judul == judul) {
+            cout << i++ << ". "
+                 << "ID: " << P->info.id << " | "
+                 << P->info.judul << " - "
+                 << P->info.artis
+                 << " (" << P->info.genre << ", "
+                 << P->info.tahun << ")"
+                 << endl;
+            ketemu = true;
+        }
+        P = P->next;
+    }
+
+    if (!ketemu) {
+        cout << "Lagu tidak ditemukan." << endl;
+    }
+}
+
 
 void deleteAllEdges(address P) {
     addressEdge E = P->firstedge;

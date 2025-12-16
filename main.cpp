@@ -102,15 +102,9 @@ int main() {
                 cout << "Cari Judul: ";
                 cleanInput();
                 getline(cin, judulCari);
-                foundSong = findSong(Library, judulCari);
-                if (foundSong != nullptr) {
-                    cout << "DITEMUKAN: " 
-                         << foundSong->info.judul << " - "
-                         << foundSong->info.artis << endl;
-                } else {
-                    cout << "Lagu tidak ditemukan." << endl;
-                }
+                searchSongs(Library, judulCari);
                 break;
+
 
             case 5:
                 cout << "Masukkan Judul untuk Playlist: ";
@@ -149,19 +143,19 @@ int main() {
             }
 
             case 8: {
-                // Logic Back (Stack)
-                pop(History); // buang lagu sekarang
+                pop(History); // buang current
 
-                address prevSong = pop(History);
-                if (prevSong != nullptr) {
-                    cout << "Mundur ke lagu: " << prevSong->info.judul << endl;
-                    push(History, prevSong); // Masukkan lagi karena sedang main
+                if (History.top != nullptr) {
+                    cout << "Mundur ke lagu: "
+                        << History.top->songRef->info.judul << endl;
                 } else {
                     cout << "Tidak ada history sebelumnya." << endl;
                 }
+
                 printHistory(History);
                 break;
             }
+
 
             case 9:
                 cout << "Terima kasih!" << endl;
