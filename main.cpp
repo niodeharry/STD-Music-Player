@@ -64,7 +64,7 @@ int main() {
             
             case 2: {
                 infotype data;
-                static int autoID = 10;
+                int autoID = Library.last->info.id + 1;
             
                 cleanInput();
             
